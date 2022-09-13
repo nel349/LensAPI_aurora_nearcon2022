@@ -1,0 +1,25 @@
+.env
+#Hardhat files
+cache
+artifacts
+node_modules
+dist/
+build/
+.vscode
+.idea
+/.VSCodeCounter/
+/types
+
+/coverage
+coverage.json
+.coverage_artifacts
+.coverage_cache
+.coverage_contracts
+
+addresses.json
+
+contracts/core/modules/follow/SecretCodeFollowModule.sol
+package-lock.json
+yarn.lock
+.serverless
+.webpack

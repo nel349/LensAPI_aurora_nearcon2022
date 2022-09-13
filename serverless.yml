@@ -1,0 +1,38 @@
+# serverless.yml
+
+service: apollo-lambda
+provider:
+  name: aws
+  runtime: nodejs16.x
+plugins:
+  - serverless-offline
+  - serverless-webpack
+custom:
+  serverless-offline:
+    noPrependStageInUrl: true
+  webpack:
+    includeModules: true
+
+package:
+   include:
+      - graphql/schema.graphql
+functions:
+  graphql:
+    # this is formatted as <FILENAME>.<HANDLER>
+    handler: graphql/awsIndex.graphqlHandler
+    events:
+    - http:
+        path: /
+        method: post
+        cors: true
+    - http:
+        path: /
+        method: get
+        cors: true
+
+#link to schema: https://min.gitcdn.link/cdn/nel349/LensProtocol_auroraNetwork/main/graphql/schema.graphql?token=GHSAT0AAAAAABQPNKQTEJA7PTOITQQIYSSUYYVS75A
+
+layers:
+  graphQLSchema:
+    path: graphql
+    description: This is the Lens protocol schema graphQL
