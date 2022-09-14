@@ -1,6 +1,6 @@
 #!/Usr/Bin/Node
 
-import { ethers, BigNumberish } from 'ethers';
+import { ethers, BigNumberish, Wallet } from 'ethers';
 import { ZERO_ADDRESS } from '../tasks/helpers/utils';
 import { CreateProfileDataStruct, LensHub__factory } from '../typechain-types';
 import { ProfileStructStructOutput } from '../typechain-types/LensHub';
@@ -32,8 +32,8 @@ export const getWallets = () => {
   return { deployerWallet, treasuryWallet, governanceWallet, user1 };
 };
 
-export const createProfile = async (handle: string) => {
-  const { governanceWallet, user1 } = getWallets();
+export const createProfile = async (handle: string, userWallet: Wallet) => {
+  const { governanceWallet } = getWallets();
 
   const addrs = getAddrs();
   const lensHub = LensHub__factory.connect(addrs['lensHub proxy'], governanceWallet);
@@ -43,7 +43,7 @@ export const createProfile = async (handle: string) => {
 
   // handle = 'handle122121129';
   const inputStruct: CreateProfileDataStruct = {
-    to: user1.address,
+    to: userWallet.address,
     handle: handle,
     imageURI: 'https://ipfs.io/ipfs/QmY9dUwYu67puaWBMxRKW98LPbXCznPwHUbhX5NeWnCJbX',
     followModule: ZERO_ADDRESS,
@@ -54,7 +54,7 @@ export const createProfile = async (handle: string) => {
   // console.log('Here B');
 
   try {
-    await lensHub.connect(user1).createProfile(inputStruct);
+    await lensHub.connect(userWallet).createProfile(inputStruct);
   } catch (e: unknown) {
     console.log('error: ' + e);
   }
